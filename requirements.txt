@@ -1,0 +1,28 @@
+numpy == 1.17
+opencv-python >= 4.5.5.64
+torch == 1.6
+torchvision
+black
+flake8
+flake8-docstrings
+gmplot
+isort
+joblib
+matplotlib
+motmetrics
+mypy
+numpy
+pandas
+pillow
+pycocotools
+pylint
+pytest
+scikit-image
+sphinx
+sphinx-rtd-theme
+tabulate
+toml
+tqdm
+pillow
+tensorboard >= 1.14
+git+https://github.com/scalabel/scalabel.git
