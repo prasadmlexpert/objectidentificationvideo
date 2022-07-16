@@ -11,7 +11,7 @@ joblib
 matplotlib
 motmetrics
 mypy
-numpy
+
 pandas
 pillow
 pycocotools
@@ -28,5 +28,5 @@ tensorboard >= 1.14
 git+https://github.com/scalabel/scalabel.git
 
 fastapi == 0.46.0
-uvicorn == 0.11.3
+uvicorn > 0.11.3
 requests == 2.22.0
