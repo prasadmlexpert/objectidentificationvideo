@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException, File, UploadFile, Form
+from google.colab.patches import cv2_imshow
 
 app = FastAPI()
 
@@ -13,8 +14,20 @@ def root():
 def _file_upload(my_file: UploadFile = File(...)):
   print('hello')
   //1. read the image-file and view
-  //2. call the pre-trained model function 
+  img_to_detect = cv2.imread('images/10k/train/004071a4-049be89b.jpg')
+  img_height = img_to_detect.shape[0]
+  img_width = img_to_detect.shape[1]
+  img_blob = cv2.dnn.blobFromImage(img_to_detect, 0.003922, (416, 416), swapRB=True, crop=False)
+
+  //2. call the pre-trained model function
+  calculateConfidence(img_blob) 
+  
   //3. return the taged image
+  tagged_img = predictions()
+
+  cv2_imshow(tagged_img)
+  cv2.imwrite("results.jpg", tagged_img)
+
   return {
       "name"
       }
