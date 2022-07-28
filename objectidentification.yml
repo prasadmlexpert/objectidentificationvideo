@@ -1,5 +1,5 @@
 train: ../images/train/
-validation: ../images/val/
+val: ../images/val/
 test: ../images/test/
 
 #number of classes
