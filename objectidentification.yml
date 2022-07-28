@@ -1,6 +1,6 @@
-train: ../drive/.shortcut-targets-by-id/16kphvlmJsL1izzffpLfadthz0YrraYkW/ImageIdetificationProject/Project_work/bdd100k/images/train/
-validation: ../drive/.shortcut-targets-by-id/16kphvlmJsL1izzffpLfadthz0YrraYkW/ImageIdetificationProject/Project_work/bdd100k/images/val/
-test: ../drive/.shortcut-targets-by-id/16kphvlmJsL1izzffpLfadthz0YrraYkW/ImageIdetificationProject/Project_work/bdd100k/images/test/
+train: ../images/train/
+validation: ../images/val/
+test: ../images/test/
 
 #number of classes
 nc: 14
