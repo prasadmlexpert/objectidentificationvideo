@@ -1,9 +1,0 @@
-*.pt
-__pycache__
-.DS_Store
-venv
-*.json
-tmp_*
-*.1
-api/static/results/*
-api/uploads/*
