@@ -38,7 +38,7 @@ jQuery(document).ready(function () {
                 $("#row_results").show();
             }
 
-            var interval = setInterval(refresh, 1000);
+            var interval = setInterval(refresh, 300000);
 
             function refresh() {
                 n_success = 0

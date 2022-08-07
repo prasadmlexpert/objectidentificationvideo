@@ -25,6 +25,6 @@ def predict_image(self, data):
         return {'status': 'SUCCESS', 'result': data_pred}
     except Exception as ex:
         try:
-            self.retry(countdown=2)
+            self.retry(countdown=300)
         except MaxRetriesExceededError as ex:
             return {'status': 'FAIL', 'result': 'max retried achieved'}
