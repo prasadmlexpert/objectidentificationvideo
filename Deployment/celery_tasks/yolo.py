@@ -3,7 +3,7 @@ import torch
 import os
 import cv2
 import matplotlib.pyplot as plt
-
+import gc
 
 class YoloModel:
     def __init__(self):
@@ -17,12 +17,18 @@ class YoloModel:
         if img[-3:] == 'mp4':
             print("in processing --------------------------------------------------------1")
             vid = cv2.VideoCapture(img)
+            outpath = os.path.join(os.getcwd(),"./data/video.mp4")
 
             try:
                 print("in processing --------------------------------------------------------2")
                 # creating a folder named data
                 if not os.path.exists('data'):
                     os.makedirs('data')
+                print(os.getcwd())
+                size = (int(vid.get(cv2.CAP_PROP_FRAME_WIDTH)),int(vid.get(cv2.CAP_PROP_FRAME_HEIGHT)))
+                print(size)
+                print(vid.get(cv2.CAP_PROP_FPS))
+                videowriter = cv2.VideoWriter(outpath, cv2.VideoWriter_fourcc(*'mp4v') ,  vid.get(cv2.CAP_PROP_FPS)/3 , size)
 
             # if not created then raise error
             except OSError:
@@ -37,23 +43,25 @@ class YoloModel:
                 # reading from frame
                 success, frame = vid.read()
                 print(f"in processing --------------------------------------------------------{3+currentframe}")
-                if success:
-                    # continue creating images until video remains
-                    name = './data/frame' + str(currentframe) + '.jpg'
-                    print('Creating...' + name)
-
-                    # writing the extracted images
-                    cv2.imwrite(os.path.join(os.getcwd(),name), frame)
+                if success and currentframe%3 == 0 :
+                    
                     with torch.no_grad():
-                        result = self.model(os.path.join(os.getcwd(),name))
-                        result.save('static/results/')
+                        result = self.model(frame)
+                        result.render()
+                        videowriter.write(result.imgs[0])
+                        # result.save(save_dir='static/results/')
+                        
 
                     # increasing counter so that it will
                     # show how many frames are created
                     currentframe += 1
+                elif success:
+                    currentframe += 1
                 else:
                     break
             print(f"in processing --------------------------------------------------------{3+currentframe}")
+            vid.release()
+            videowriter.release()
             data = []
             for i in range(len(result.xywhn[0])):
                 x, y, w, h, prob, cls = result.xywhn[0][i].numpy()
@@ -65,14 +73,19 @@ class YoloModel:
                 preds['prob'] = str(prob)
                 preds['class'] = result.names[int(cls)]
                 data.append(preds)
-            file_name = os.path.join(os.getcwd(),name)
-            return {'file_name': file_name, 'bbox': data}
+            del vid
+            gc.collect()
+            if os.path.exists(img):
+                os.remove(img)
+            else:
+                print("The file does not exist"+img) 
+            return {'file_name': outpath, 'bbox': data}
 
         else:
             try:
                 with torch.no_grad():
                     result = self.model(img)
-                result.save('static/results/')
+                result.save(save_dir='static/')
                 final_result = {}
                 data = []
                 file_name = f'static/{result.files[0]}'
