@@ -1,12 +1,30 @@
-import yolov5
 import torch
-import cv2
+from azureml.core import Model
+import json
+def init():
 
-########################################################################################
-model = yolov5.load('yolov5xbdd.pt')
-mps_device = torch.device("mps")
-model.to(mps_device)
-vid = cv2.VideoCapture(0)
-while True:
-    ret, frame = vid.read()
-    frame = mps_device
+    global model
+
+    model_name = 'bddyolov5'
+
+    path = Model.get_model_path(model_name)
+
+    model = torch.hub.load('ultralytics/yolov5', 'custom', path= path ,force_reload=True)
+    model.eval()
+
+def run(data):
+
+    try:
+
+        data = json.loads(data)
+
+        result = model(data['data'])
+        result.render()
+
+        return {'data' : result.imgs[0] , 'message' : "classified"}
+
+    except Exception as e:
+
+        error = str(e)
+
+        return {'data' : error , 'message' : 'Failed to classify'}
