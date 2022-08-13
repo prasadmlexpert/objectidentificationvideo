@@ -67,7 +67,7 @@ class YoloModel:
                     if rotateCode is not None:
                         frame = correct_rotation(frame, cv2.ROTATE_180)
                 print(f"in processing --------------------------------------------------------{3+currentframe}")
-                if success and currentframe%300 == 0 :
+                if success and currentframe%3 == 0 :
                     
                     with torch.no_grad():
                         result = self.model(frame)
