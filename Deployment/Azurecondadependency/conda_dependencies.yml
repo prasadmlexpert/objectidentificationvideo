@@ -1,0 +1,13 @@
+channels:
+- anaconda
+- conda-forge
+dependencies:
+- python=3.6.2
+- pip:
+  - opencv-python
+  - ffmpeg
+  - ffmpeg-python
+  - yolov5
+  - torch
+  - torchvision
+name: azureml_2d0fd20031db3baaed8684d5f08fe619
