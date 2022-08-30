@@ -1,0 +1,6 @@
+train: ../images/train
+val: ../images/val
+test: ../images/test
+
+nc: 11
+names: ['bicycle', 'bus', 'car', 'motorcycle', 'person', 'rider', 'traffic light', 'traffic sign', 'trailer', 'train', 'truck']
