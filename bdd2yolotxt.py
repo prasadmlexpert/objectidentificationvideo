@@ -20,7 +20,7 @@ parser.add_argument("-n", "--noOfEachItem",type=int, help = "Number of items to 
 args = vars(parser.parse_args())
 print(args['ImageRoot'],args['LablePath'],args['OutputDir'],args['noOfEachItem'],args['target'])
 
-counter = {'car': 0, 'truck': 1, 'bus': 2, 'train': 3, 'person': 4, 'rider': 5, 'traffic sign': 6, 'traffic light': 7, 'motorcycle': 8, 'pedestrian': 9, 'bicycle': 10, 'other vehicle': 11, 'trailer': 12, 'other person': 13}
+counter = {'car': 0, 'truck': 1, 'bus': 2, 'train': 3, 'person': 4, 'rider': 5, 'traffic sign': 6, 'traffic light': 7, 'motorcycle': 8, 'pedestrian': 4, 'bicycle': 9, 'other vehicle': 10, 'trailer': 11, 'other person': 4}
 
 lastidentifier = 13
 def classify_classes(c_name):
