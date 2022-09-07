@@ -14,6 +14,7 @@ services:
 
   worker:
     container_name: worker
+    image: tensorflow/tensorflow:latest-gpu
     build:
       dockerfile: api/Dockerfile
       context: .
@@ -22,3 +23,8 @@ services:
       - .:/app
     ports:
       - "8600:8600"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]

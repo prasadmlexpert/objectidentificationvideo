@@ -36,7 +36,7 @@ class YoloModel:
         if img[-3:] == 'mp4' or img[-3:] == 'mov':
             print("in processing --------------------------------------------------------1")
             vid = cv2.VideoCapture(img)
-            outpath = os.path.join(os.getcwd(),"./data/video.mp4")
+            outpath = os.path.join(os.getcwd(),"./api/static/video.mp4")
             if img[-3:] == 'mov':
                 rotateCode = check_rotation(img)
 
@@ -49,7 +49,7 @@ class YoloModel:
                 size = (int(vid.get(cv2.CAP_PROP_FRAME_WIDTH)),int(vid.get(cv2.CAP_PROP_FRAME_HEIGHT)))
                 print(size)
                 print(vid.get(cv2.CAP_PROP_FPS))
-                videowriter = cv2.VideoWriter(outpath, cv2.VideoWriter_fourcc(*'mp4v') ,  vid.get(cv2.CAP_PROP_FPS)/3 , size)
+                videowriter = cv2.VideoWriter(outpath, cv2.VideoWriter_fourcc(*'mp4v') , 30 , size)
 
             # if not created then raise error
             except OSError:
@@ -63,23 +63,23 @@ class YoloModel:
 
                 # reading from frame
                 success, frame = vid.read()
+                print(success)
                 if img[-3:] == 'mov':
                     if rotateCode is not None:
                         frame = correct_rotation(frame, cv2.ROTATE_180)
                 print(f"in processing --------------------------------------------------------{3+currentframe}")
-                if success and currentframe%3 == 0 :
+                if success  :
                     
                     with torch.no_grad():
                         result = self.model(frame)
                         result.render()
-                        videowriter.write(result.imgs[0])
+                        print(result)
+                        videowriter.write(result.ims[0])
                         # result.save(save_dir='static/results/')
                         
 
                     # increasing counter so that it will
                     # show how many frames are created
-                    currentframe += 1
-                elif success:
                     currentframe += 1
                 else:
                     break
@@ -88,34 +88,29 @@ class YoloModel:
             videowriter.release()
             data = []
             for i in range(len(result.xywhn[0])):
-                x, y, w, h, prob, cls = result.xywhn[0][i].numpy()
                 preds = {}
-                preds['x'] = str(x)
-                preds['y'] = str(y)
-                preds['w'] = str(w)
-                preds['h'] = str(h)
-                preds['prob'] = str(prob)
-                preds['class'] = result.names[int(cls)]
+                preds['x'] = 'video'
+                preds['y'] = 'video'
+                preds['w'] = 'video'
+                preds['h'] = 'video'
+                preds['prob'] = 'video'
+                preds['class'] = 'video'
                 data.append(preds)
             del vid
             gc.collect()
-            if os.path.exists(img):
-                os.remove(img)
-            else:
-                print("The file does not exist"+img) 
-            return {'file_name': outpath, 'bbox': data}
+            return {'file_name': 'static/video.mp4', 'bbox': data}
 
         else:
             try:
                 with torch.no_grad():
                     result = self.model(img)
-                result.save(save_dir='static/')
+                result.save(save_dir='api/static/')
                 final_result = {}
                 data = []
                 file_name = f'static/{result.files[0]}'
 
                 for i in range(len(result.xywhn[0])):
-                    x, y, w, h, prob, cls = result.xywhn[0][i].numpy()
+                    x, y, w, h, prob, cls = result.xywhn[0][i].cpu().numpy()
                     preds = {}
                     preds['x'] = str(x)
                     preds['y'] = str(y)

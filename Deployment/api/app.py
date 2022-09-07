@@ -14,7 +14,7 @@ from pydantic.typing import List
 import numpy as np
 
 UPLOAD_FOLDER = 'uploads'
-STATIC_FOLDER = 'static/results'
+STATIC_FOLDER = 'static'
 
 isdir = os.path.isdir(UPLOAD_FOLDER)
 if not isdir:
