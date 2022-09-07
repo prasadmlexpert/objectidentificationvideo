@@ -5,7 +5,7 @@ import cv2
 import matplotlib.pyplot as plt
 import gc
 import ffmpeg    
-
+import time
 def check_rotation(path_video_file):
     # this returns meta-data of the video file in form of a dictionary
     meta_dict = ffmpeg.probe(path_video_file)
@@ -30,6 +30,7 @@ class YoloModel:
         self.model.eval()
 
     def predict(self, img):
+        starttime = time.time()
         print("in processing --------------------------------------------------------")
         print(img)
         print(type(img))
@@ -95,6 +96,7 @@ class YoloModel:
                 preds['h'] = 'video'
                 preds['prob'] = 'video'
                 preds['class'] = 'video'
+                preds['time'] = str(f'time taken{round(time.time()-starttime,2)}')
                 data.append(preds)
             del vid
             gc.collect()
@@ -118,6 +120,7 @@ class YoloModel:
                     preds['h'] = str(h)
                     preds['prob'] = str(prob)
                     preds['class'] = result.names[int(cls)]
+                    preds['time'] = str(f'time taken {round(time.time()-starttime,2)} seconds')
                     data.append(preds)
 
                 return {'file_name': file_name, 'bbox': data}
