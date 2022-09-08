@@ -89,23 +89,7 @@ python server.py --port 8080
   
   
 ### Deployment docker(gcp) 
-```
-Not explored on GCP works on local
-```
-
-built using https://github.com/GoldVelvet/YOLOv5-fastapi-celery-redis-rabbitmq <br/>
-Run on GCP <br/>
-```
-git clone https://github.com/prasadmlexpert/objectidentificationvideo.git
-cd objectidentificationvideo/Deployment
-gdown <yolov5xbdd pretrained model>
-docker-compose build
-docker-compose up &
-cd webapp
-uvicorn app:app --host 0.0.0.0 --port 80 --reload
-```
-
-
+[Refer to wiki](https://github.com/prasadmlexpert/objectidentificationvideo/wiki/Deployment-using-Docker)
 
 ## <div align="center">Environments</div>
 
