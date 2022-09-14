@@ -49,11 +49,14 @@ def convert2yolo_roi(img_name, obj):
 
     return "{} {} {} {} {}\n".format(obj_class, x, y, w, h)
 
-def parseline(line,items,finalFile):
+def parseline(line,items,finalFile,outDir=None):
     global lastidentifier
     name = line['name']
-    imgPath = imgRootPath + name
-    txtPath = imgPath.replace("jpg", "txt")
+    imgPath = os.path.join(imgRootPath, name)
+    if outDir == None:
+        txtPath = imgPath.replace("jpg", "txt")
+    else:
+        txtPath = os.path.join(outDir,name.replace("jpg", "txt"))
     if os.path.isfile(imgPath):
         with open(txtPath, "w")as file:
             if 'labels' in line.keys():
@@ -87,7 +90,7 @@ if __name__ == '__main__':
 
     with tqdm(total=len(lines)) as pbar:
         with ThreadPoolExecutor(max_workers=100) as ex:
-            futures = [ex.submit(parseline, line,itemsoftype,args['target']) for line in lines]
+            futures = [ex.submit(parseline, line,itemsoftype,args['target'],outdir) for line in lines]
             
             for future in as_completed(futures):
                 result = future.result()
